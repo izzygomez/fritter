@@ -4,9 +4,16 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+// TODO should I include handlebars
 
-var routes = require('./routes/index');
+// Import route handlers
+var index = require('./routes/index');
 var users = require('./routes/users');
+var tweets = require('./routes/tweets');
+
+// Import User model
+var User = require('./models/User');
 
 var app = express();
 
@@ -22,8 +29,39 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use(session({ secret: 'izzyg', resave: true, saveUninitialized: true }));
+
+// Authentication middleware. This function
+// is called on _every_ request and populates
+// the req.currentUser field with the logged-in
+// user object based off the username provided
+// in the session variable (accessed by the
+// encrypted cookied).
+app.use(function(req, res, next) {
+  if (req.session.username) {
+    User.findByUsername(req.session.username, 
+      function(err, user) {
+        if (user) {
+          req.currentUser = user;
+        } else {
+          req.session.destroy();
+        }
+        next();
+      });
+  } else {
+      next();
+  }
+});
+
+// Map paths to imported route handlers
+app.use('/', index);
 app.use('/users', users);
+app.use('/tweets', tweets);
+
+// ERROR HANDLERS
+// Note: The methods below are called
+// only if none of the above routes 
+// match the requested pathname.
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -31,8 +69,6 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-
-// error handlers
 
 // development error handler
 // will print stacktrace
