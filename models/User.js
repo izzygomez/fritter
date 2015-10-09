@@ -56,6 +56,31 @@ var User = (function User(_store) {
     }
   };
 
+  that.getUsers = function (username, callback) {
+    if (userExists(username)) {
+      var users = _store.keys();
+      callback(null, users);
+    } else {
+      callback({ msg: 'Invalid user'});
+    }
+  }
+
+  that.getAllTweets = function (username, callback) {
+    if (userExists(username)) {
+      var allTweets = [];
+      var users = _store.keys();
+      users.forEach( function (element, index, array) {
+        var user = getUser(element);
+        user.tweets.forEach( function (element, index, array) {
+          allTweets.push(element);
+        });
+      });
+      callback(null, allTweets);
+    } else {
+      callback({ msg: 'Invalid user' });
+    }
+  }
+
   that.getTweet = function(username, tweetId, callback) {
     if (userExists(username)) {
       var user = getUser(username);
@@ -64,8 +89,10 @@ var User = (function User(_store) {
         callback(null, tweet);
       } else {
         callback({ msg : 'Invalid tweet. '});
+        console.log("lolololol");
       }
     } else {
+      console.log("yoooo");
       callback({ msg : 'Invalid user. '});
     }
   };
@@ -73,7 +100,17 @@ var User = (function User(_store) {
   that.getTweets = function(username, callback) {
     if (userExists(username)) {
       var user = getUser(username);
-      callback(null, user.tweets);
+
+      var allTweets = [];
+      var users = Object.keys(_store);
+      users.forEach( function (element, index, array) {
+        var user = getUser(element);
+        user.tweets.forEach( function (element, index, array) {
+          allTweets.push(element);
+        });
+      });
+
+      callback(null, user.tweets, allTweets);
     } else {
       callback({ msg : 'Invalid user.' });
     }

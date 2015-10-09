@@ -3,6 +3,7 @@
 // may be inserted somewhere in the DOM using a function
 // call instead of manual insertion of an HTML String.
 Handlebars.registerPartial('tweet', Handlebars.templates['tweet']);
+Handlebars.registerPartial('allTweet', Handlebars.templates['allTweet']);
 
 // Global variable set when a user is logged in. Note
 // that this is unsafe on its own to determine this: we 
@@ -30,7 +31,7 @@ var loadHomePage = function() {
 
 var loadTweetsPage = function() {
 	$.get('/tweets', function(response) {
-		loadPage('tweets', { tweets: response.content.tweets, currentUser: currentUser });
+		loadPage('tweets', { tweets: response.content.tweets, currentUser: currentUser, allTweets: response.content.allTweets });
 	});
 };
 

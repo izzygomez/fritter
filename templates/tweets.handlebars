@@ -14,7 +14,15 @@
   {{#each tweets}}
     {{> tweet}}
   {{else}}
-    <p><em>No tweets yet!</em></p>
+    <p><em>You haven't tweeted yet! Go ahead and tweet above.</em></p>
+  {{/each}}
+
+  <h1>All user's Tweets</h1>
+
+  {{#each allTweets}}
+    {{> allTweet}}
+  {{else}}
+    <p><em>Nobody's tweeted yet!</em></p>
   {{/each}}
 
 </div>

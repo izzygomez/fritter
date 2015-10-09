@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({ secret: 'izzyg', resave: true, saveUninitialized: true }));
+app.use(session({ secret: 'izzygomez', resave: true, saveUninitialized: true }));
 
 // Authentication middleware. This function
 // is called on _every_ request and populates

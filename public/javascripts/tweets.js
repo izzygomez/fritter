@@ -25,6 +25,7 @@
           type: 'DELETE'
       }).done(function(response) {
           item.remove();
+          window.location.reload(true);
       }).fail(function(responseObject) {
           var response = $.parseJSON(responseObject.responseText);
           $('.error').text(response.err);
