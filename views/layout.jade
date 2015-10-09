@@ -3,7 +3,12 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='https://code.jquery.com/jquery-1.11.1.min.js')
+    script(src='/javascripts/handlebars.runtime-v4.0.2.js')
+    script(src='/javascripts/templates.js')
+    script(src='/javascripts/helpers.js')
+    script(src='/javascripts/index.js')
+    script(src='/javascripts/users.js')
+    script(src='/javascripts/tweets.js')
   body
     block content
-    block foot
-    p Today's date is #{date}
