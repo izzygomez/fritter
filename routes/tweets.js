@@ -74,6 +74,25 @@ router.post('*', requireContent);
 */
 
 /*
+  GET /tweets
+  No request parameters
+  Response:
+    - success: true if the server succeeded in getting the user's tweets
+    - content: on success, an object with a single field 'tweets', which contains a list of the
+    user's tweets
+    - err: on failure, an error message
+*/
+router.get('/', function(req, res) {
+  User.getTweets(req.currentUser.username, function(err, tweets) {
+    if (err) {
+      utils.sendErrResponse(res, 500, 'An unknown error occurred.');
+    } else {
+      utils.sendSuccessResponse(res, { tweets: tweets });
+    }
+  });
+});
+
+/*
   GET /tweets/:tweet
   Request parameters:
     - tweet: the unique ID of the tweet within the logged in user's tweets collection
@@ -138,7 +157,7 @@ router.post('/:tweet', function(req, res) {
     - err: on failure, an error message
 */
 router.delete('/:tweet', function(req, res) {
-  User.removeNote(
+  User.removeTweet(
     req.currentUser.username, 
     req.tweet._id, 
     function(err) {
@@ -151,4 +170,3 @@ router.delete('/:tweet', function(req, res) {
 });
 
 module.exports = router;
-console.log(module);
