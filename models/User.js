@@ -64,15 +64,6 @@ var User = (function User(_store) {
     return false;
   }
 
-  that.getUsers = function (username, callback) {
-    if (userExists(username)) {
-      var users = _store.keys();
-      callback(null, users);
-    } else {
-      callback({ msg: 'Invalid user'});
-    }
-  }
-
   that.getTweet = function(username, tweetId, callback) {
     if (userExists(username)) {
       var user = getUser(username);
