@@ -29,6 +29,9 @@ var loadHomePage = function() {
 	}
 };
 
+/*
+  note that loadTweetsPage reads in the data for the user's tweets and all tweets
+*/
 var loadTweetsPage = function() {
 	$.get('/tweets', function(response) {
 		loadPage('tweets', { tweets: response.content.tweets, currentUser: currentUser, allTweets: response.content.allTweets });

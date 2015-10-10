@@ -14,16 +14,27 @@ var User = (function User(_store) {
 
   var that = Object.create(User.prototype);
 
+  // PRIVATE FUNCTIONS
+  /*
+    returns boolean of whether indicated user exists
+  */
   var userExists = function(username) {
     return _store[username] !== undefined;
   }
 
+  /*
+    returns user
+  */
   var getUser = function(username) {
     if (userExists(username)) {
       return _store[username];
     }
   }
 
+  // PUBLIC FUNCTIONS
+  /*
+    returns user publicly
+  */
   that.findByUsername = function (username, callback) {
     if (userExists(username)) {
       callback(null, getUser(username));
@@ -32,6 +43,9 @@ var User = (function User(_store) {
     }
   }
 
+  /*
+    verifies that provided password for user is correct
+  */
   that.verifyPassword = function(username, candidatepw, callback) {
     if (userExists(username)) {
       var user = getUser(username);
@@ -45,6 +59,9 @@ var User = (function User(_store) {
     }
   }
 
+  /*
+    creates a new user if user not already created
+  */
   that.createNewUser = function (username, password, callback) {
     if (userExists(username)) {
       callback({ taken: true });
@@ -64,6 +81,9 @@ var User = (function User(_store) {
     return false;
   }
 
+  /*
+    gets tweet of username by tweetId
+  */
   that.getTweet = function(username, tweetId, callback) {
     if (userExists(username)) {
       var user = getUser(username);
@@ -78,6 +98,9 @@ var User = (function User(_store) {
     }
   };
 
+  /*
+    returns tweets of current user, and tweets of all users
+  */
   that.getTweets = function(username, callback) {
     if (userExists(username)) {
       var user = getUser(username);
@@ -97,6 +120,9 @@ var User = (function User(_store) {
     }
   }
 
+  /*
+    adds a tweet to the current user
+  */
   that.addTweet = function(username, tweet, callback) {
     if (userExists(username)) {
       var user = getUser(username);
@@ -108,6 +134,11 @@ var User = (function User(_store) {
     }
   };
 
+  /*
+    updates current user's tweet; this feature currently deprecated, but
+    the code has been left here in case it's re-enabled in a future version
+    of this program
+  */
   that.updateTweet = function(username, tweetId, newContent, callback) {
     if (userExists(username)) {
       var tweets = getUser(username).tweets;
@@ -122,6 +153,9 @@ var User = (function User(_store) {
     }
   };
 
+  /*
+    removes one of current user's tweet, according to tweetId
+  */
   that.removeTweet = function(username, tweetId, callback) {
     if (userExists(username)) {
       var tweets = getUser(username).tweets;

@@ -78,8 +78,8 @@ router.post('*', requireContent);
   No request parameters
   Response:
     - success: true if the server succeeded in getting the user's tweets
-    - content: on success, an object with a single field 'tweets', which contains a list of the
-    user's tweets
+    - content: on success, an object with fields 'tweets' and 'allTweets', which are a lists of the
+    user's tweets and of all user's tweets, respectively
     - err: on failure, an error message
 */
 router.get('/', function(req, res) {

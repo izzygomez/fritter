@@ -1,6 +1,5 @@
 var assert = require("assert");
-var User = require("./../models/User")
-var utils = require("./../utils/utils")
+var User = require("./../models/User");
 
 describe('User', function () { 
 
