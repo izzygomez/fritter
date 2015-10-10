@@ -56,6 +56,14 @@ var User = (function User(_store) {
     }
   };
 
+  /*
+    Helper function for testing purposes
+  */
+  that.isUser = function (username) {
+    if(userExists(username)) return true;
+    return false;
+  }
+
   that.getUsers = function (username, callback) {
     if (userExists(username)) {
       var users = _store.keys();
@@ -89,10 +97,8 @@ var User = (function User(_store) {
         callback(null, tweet);
       } else {
         callback({ msg : 'Invalid tweet. '});
-        console.log("lolololol");
       }
     } else {
-      console.log("yoooo");
       callback({ msg : 'Invalid user. '});
     }
   };
