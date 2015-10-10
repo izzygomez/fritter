@@ -73,22 +73,6 @@ var User = (function User(_store) {
     }
   }
 
-  that.getAllTweets = function (username, callback) {
-    if (userExists(username)) {
-      var allTweets = [];
-      var users = _store.keys();
-      users.forEach( function (element, index, array) {
-        var user = getUser(element);
-        user.tweets.forEach( function (element, index, array) {
-          allTweets.push(element);
-        });
-      });
-      callback(null, allTweets);
-    } else {
-      callback({ msg: 'Invalid user' });
-    }
-  }
-
   that.getTweet = function(username, tweetId, callback) {
     if (userExists(username)) {
       var user = getUser(username);
