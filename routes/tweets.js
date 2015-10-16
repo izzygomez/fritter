@@ -86,21 +86,9 @@ router.get('/', function(req, res) {
   User.getTweets(req.currentUser.username, function(err, tweets, allTweets) {
     if (err) {
       utils.sendErrResponse(res, 500, 'An unknown error occurred.');
-    } 
-
-    else {
+    } else {
       utils.sendSuccessResponse(res, { tweets: tweets, allTweets: allTweets });
     } 
-
-    // else {
-    //   User.getUsers(req.currentUser.username, function(err, users) {
-    //     if (err) {
-    //       utils.sendErrResponse(res, 500, 'An unknown error occurred.');
-    //     } else {
-    //       utils.sendSuccessResponse(res, { tweets: tweets, users: users })
-    //     }
-    //   });
-    // }
   });
 });
 

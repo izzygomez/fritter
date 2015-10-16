@@ -42,7 +42,6 @@ router.post('/login', function(req, res) {
   if (isLoggedInOrInvalidBody(req, res)) {
     return;
   }
-
   User.verifyPassword(req.body.username, req.body.password, function(err, match) {
     if (match) {
       req.session.username = req.body.username;
