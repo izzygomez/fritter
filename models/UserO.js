@@ -74,14 +74,6 @@ var User = (function User(_store) {
   };
 
   /*
-    Helper function for testing purposes
-  */
-  that.isUser = function (username) {
-    if(userExists(username)) return true;
-    return false;
-  }
-
-  /*
     gets tweet of username by tweetId
   */
   that.getTweet = function(username, tweetId, callback) {
