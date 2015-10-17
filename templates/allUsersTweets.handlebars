@@ -1,0 +1,15 @@
+<div id="tweets">
+
+  <p>Welcome, {{currentUser}} (<a href="#" id="logout-link">logout</a>)</p>
+  <p><a href="#" id="my-tweets">My tweets</a> <a href="#" id="followers-tweets">Follower's tweets</a></p>  
+
+  <h1>All user's Tweets</h1>
+  <!-- TODO implement this correctly -->  
+  <!--Feed of all tweets, including yours!-->
+  {{#each allTweets}}
+    {{> allTweet}}
+  {{else}}
+    <p><em>Nobody's tweeted yet!</em></p>
+  {{/each}}
+
+</div>
