@@ -36,7 +36,6 @@ var getUser = function (username, callback) {
 var getAllUsers = function (callback) {
 	User.find({}, function (err, users) {
 		if (err) throw err;
-		console.log("Got all users!");
 		callback(users);
 	})
 }
@@ -89,8 +88,6 @@ userSchema.statics.createNewUser = function (username, password, callback) {
 				callback({ taken: true });
 			}
 		} else {
-			console.log("Creating new user...");
-
 			var newUser = User({
 				username: username,
 				password: password,
@@ -102,56 +99,7 @@ userSchema.statics.createNewUser = function (username, password, callback) {
 				if (err) throw err;
 				console.log('User successfully stored in database!');
 			});
-
-
-			// TESTING GROUNDS LOL DELETE FROM HERE DOWN AFTER DONE WITH EVERYTHING
-
-			// getUser(username, function(user) {
-			// 	if (user===null) {
-			// 		console.log("some shit went down");
-			// 	} else {
-			// 		console.log("printing out user info:");
-			// 		console.log(user);
-			// 		console.log(user.username);
-			// 		console.log(user.password);
-			// 		console.log(user.following);
-			// 		console.log(user.tweets);
-			// 	}
-			// });
-
-			// User.verifyPassword(username, password, function (x, isVerified) {
-			// 	if (isVerified) {
-			// 		console.log("This user password combination is verified!");
-			// 	} else {
-			// 		console.log("Incorrect password!");
-			// 	}
-			// });
-
-			// User.verifyPassword(username, "password", function (x, isVerified) {
-			// 	if (isVerified) {
-			// 		console.log("This user password combination is verified!");
-			// 	} else {
-			// 		console.log("Incorrect password!");
-			// 	}
-			// });
 			
-			// console.log("Adding tweet to user");
-
-			// User.addTweet(username, {content: "this is gonna be my first tweet!", creator: username}, function () {});
-
-			// User.addTweet(username, {content: "bitch", creator: username}, function () {
-			// 	User.getTweets(username, function(err, userTweets, allTweets) {
-			// 		if (err) throw err;
-			// 		console.log("I MADE IT MA");
-			// 		console.log("...");
-			// 		console.log(userTweets);
-			// 		console.log("...");
-			// 		console.log(allTweets);
-			// 		console.log("...");
-			// 	});
-			// });
-
-			// DON'T DELETE THIS
 			callback(null, username);
 		}
 	});
@@ -164,7 +112,7 @@ userSchema.statics.getTweet = function (username, tweetId, callback) {
 			callback({msg: 'Invalid user'});
 		} else {
 			var tweet = user.tweets.filter(function(tw){
-				return tw._id === tweetId;
+				return tw._id === parseInt(tweetId);
 			});
 
 			if (tweet.length===1) {
@@ -178,25 +126,19 @@ userSchema.statics.getTweet = function (username, tweetId, callback) {
 
 // DONE
 userSchema.statics.getTweets = function (username, callback) {
-	console.log('ive arrived here');
-	console.log(username);
 	getUser(username, function (user) {
 		if (user===null) {
 			callback({ msg: 'Invalid user' });
 		} else {
 			var allTweets = [];
-			// TODO uncomment this
-			// getAllUsers(function (users) {
-			// 	users.forEach( function (someUser, index, array) {
-			// 		someUser.tweets.forEach( function (tweet, index, array) {
-			// 			allTweets.push(tweet);
-			// 		});
-			// 	});
-			// });
-			console.log("got here boyy");
-			console.log(user.tweets);
-
-			callback(null, user.tweets, []);
+			getAllUsers(function (users) {
+				users.forEach( function (someUser, index, array) {
+					someUser.tweets.forEach( function (tweet, index, array) {
+						allTweets.push(tweet);
+					});
+				});
+				callback(null, user.tweets, allTweets);
+			});
 		}
 	});
 }
@@ -208,7 +150,7 @@ userSchema.statics.addTweet = function (username, tweet, callback) {
 			callback({msg: 'Invalid user.'});
 		} else {
 			tweet._id = Date.now();
-			tweet.createDate = new Date().toString();
+			// tweet.createDate = new Date().toString();
 
 			var conditions = { username: user.username };
 			var update = { $push: { tweets: tweet } };
@@ -220,14 +162,29 @@ userSchema.statics.addTweet = function (username, tweet, callback) {
 	});
 }
 
-// DONE no need to implement
 // userSchema.statics.updateTweet = function (username, tweetId, newContent, callback) {
-// 	// TODO implement
 // }
 
-// userSchema.statics.removeTweet = function (username, tweetId, callback) {
-// 	// TODO implement
-// }
+userSchema.statics.removeTweet = function (username, tweetId, callback) {
+	getUser(username, function (user) {
+		if (user===null) {
+			callback({ msg: 'Invalid user' });
+		} else {
+			User.getTweet(username, tweetId, function (err, tweet) {
+				if (err) throw err;
+				// remove only the tweet w the given tweet_id
+				updatedTweets = user.tweets.filter(function (el) {return el._id !== tweetId});
+
+				var conditions = { username: user.username };
+				var update = { $set: { tweets: updatedTweets} };
+				User.update(conditions, update, function () {
+					console.log("successfully removed tweet from "+user.username+"!");
+				});
+				callback(null);
+			});
+		}
+	});
+}
 
 var User = mongoose.model('User', userSchema);
 
