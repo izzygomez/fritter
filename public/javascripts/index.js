@@ -34,9 +34,23 @@ var loadHomePage = function() {
 */
 var loadTweetsPage = function() {
 	$.get('/tweets', function(response) {
-		loadPage('tweets', { tweets: response.content.tweets, currentUser: currentUser, allTweets: response.content.allTweets });
+		loadPage('tweets', { tweets: response.content.tweets, currentUser: currentUser, allTweets: response.content.allTweets, followersTweets: response.content.followersTweets });
 	});
-};
+};	
+
+var loadAllTweetsPage = function () {
+	console.log("loading all tweets page");
+	$.get('/tweets', function(response) {
+		loadPage('allUsersTweets', { tweets: response.content.tweets, currentUser: currentUser, allTweets: response.content.allTweets, followersTweets: response.content.followersTweets });
+	});
+}
+
+var loadFollowersTweetsPage = function () {
+	console.log("loading all follower's tweets page");
+	$.get('/tweets', function(response) {
+		loadPage('allFollowersTweets', { tweets: response.content.tweets, currentUser: currentUser, allTweets: response.content.allTweets, followersTweets: response.content.followersTweets });
+	});	
+}
 
 $(document).ready(function() {
 	$.get('/users/current', function(response) {

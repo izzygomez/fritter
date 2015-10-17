@@ -121,13 +121,28 @@ userSchema.statics.getTweets = function (username, callback) {
 			callback({ msg: 'Invalid user' });
 		} else {
 			var allTweets = [];
+			var followersTweets = [];
+			// console.log("user.tweets: " + user.tweets);
+			// console.log("typeof user.tweets: " + typeof(user.tweets));
+			// console.log("user.following: " + user.following);
+			// console.log("typeof user.following: " + typeof(user.following));
+			// user.following.forEach( function (elmnt, index, array) {
+			// 	console.log("elmnt: " + elmnt);
+			// 	console.log("typeof elmnt: " + typeof(elmnt));
+			// });
+
 			getAllUsers(function (users) {
 				users.forEach( function (someUser, index, array) {
 					someUser.tweets.forEach( function (tweet, index, array) {
 						allTweets.push(tweet);
+						// console.log("someUser.username: " + someUser.username);
+						// console.log("typeof someUser.username: " + typeof(someUser.username));
+						if (user.following.indexOf(someUser.username)!==-1) {
+							followersTweets.push(tweet);
+						}
 					});
 				});
-				callback(null, user.tweets, allTweets);
+				callback(null, user.tweets, allTweets, followersTweets);
 			});
 		}
 	});

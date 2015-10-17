@@ -17,6 +17,22 @@
       });
   });
 
+  $(document).on('click', '#my-tweets', function(evt) {
+      console.log("clicked my tweets button");
+      loadHomePage();
+  });
+
+  $(document).on('click', '#all-users-tweets', function(evt) {
+      console.log("clicked all users tweets button");
+      loadAllTweetsPage();
+  });
+
+  $(document).on('click', '#followers-tweets', function(evt) {
+      console.log("clicked followers tweets button");
+      loadFollowersTweetsPage();
+  });
+
+
   $(document).on('click', '.delete-tweet', function(evt) {
       var item = $(this).parent();
       var id = item.data('tweet-id');
@@ -25,7 +41,7 @@
           type: 'DELETE'
       }).done(function(response) {
           item.remove();
-          window.location.reload(true);
+          // window.location.reload(true);
       }).fail(function(responseObject) {
           var response = $.parseJSON(responseObject.responseText);
           $('.error').text(response.err);

@@ -78,16 +78,16 @@ router.post('*', requireContent);
   No request parameters
   Response:
     - success: true if the server succeeded in getting the user's tweets
-    - content: on success, an object with fields 'tweets' and 'allTweets', which are a lists of the
-    user's tweets and of all user's tweets, respectively
+    - content: on success, an object with fields 'tweets', 'allTweets', and 'followersTweets', which are lists of the
+    user's tweets, all user's tweets, and a user's followers tweets, respectively
     - err: on failure, an error message
 */
 router.get('/', function(req, res) {
-  User.getTweets(req.currentUser.username, function(err, tweets, allTweets) {
+  User.getTweets(req.currentUser.username, function(err, tweets, allTweets, followersTweets) {
     if (err) {
       utils.sendErrResponse(res, 500, 'An unknown error occurred.');
     } else {
-      utils.sendSuccessResponse(res, { tweets: tweets, allTweets: allTweets });
+      utils.sendSuccessResponse(res, { tweets: tweets, allTweets: allTweets, followersTweets: followersTweets });
     } 
   });
 });
