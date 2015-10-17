@@ -89,7 +89,6 @@ userSchema.statics.createNewUser = function (username, password, callback) {
 
 			newUser.save(function (err) {
 				if (err) throw err;
-				console.log('User successfully stored in database!');
 			});
 
 			callback(null, username);
@@ -122,21 +121,10 @@ userSchema.statics.getTweets = function (username, callback) {
 		} else {
 			var allTweets = [];
 			var followersTweets = [];
-			// console.log("user.tweets: " + user.tweets);
-			// console.log("typeof user.tweets: " + typeof(user.tweets));
-			// console.log("user.following: " + user.following);
-			// console.log("typeof user.following: " + typeof(user.following));
-			// user.following.forEach( function (elmnt, index, array) {
-			// 	console.log("elmnt: " + elmnt);
-			// 	console.log("typeof elmnt: " + typeof(elmnt));
-			// });
-
 			getAllUsers(function (users) {
 				users.forEach( function (someUser, index, array) {
 					someUser.tweets.forEach( function (tweet, index, array) {
 						allTweets.push(tweet);
-						// console.log("someUser.username: " + someUser.username);
-						// console.log("typeof someUser.username: " + typeof(someUser.username));
 						if (user.following.indexOf(someUser.username)!==-1) {
 							followersTweets.push(tweet);
 						}
@@ -158,9 +146,7 @@ userSchema.statics.addTweet = function (username, tweet, callback) {
 
 			var conditions = { username: user.username };
 			var update = { $push: { tweets: tweet } };
-			User.update(conditions, update, function () {
-				console.log("successfully added tweet to "+user.username+"!");
-			});
+			User.update(conditions, update, function () {});
 			callback(null);
 		}
 	});
@@ -181,9 +167,7 @@ userSchema.statics.removeTweet = function (username, tweetId, callback) {
 
 				var conditions = { username: user.username };
 				var update = { $set: { tweets: updatedTweets} };
-				User.update(conditions, update, function () {
-					console.log("successfully removed tweet from "+user.username+"!");
-				});
+				User.update(conditions, update, function () {});
 				callback(null);
 			});
 		}
