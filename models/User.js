@@ -13,11 +13,8 @@ var userSchema = new Schema({
 	following: []
 });
 
-//////////// STATICS ////////////
+// Private methods
 
-//////// PRIVATE
-
-// DONE
 var getUser = function (username, callback) {
 	userExists(username, function (err) {
 		if (err) {
@@ -32,7 +29,6 @@ var getUser = function (username, callback) {
 	});
 }
 
-// DONE
 var getAllUsers = function (callback) {
 	User.find({}, function (err, users) {
 		if (err) throw err;
@@ -40,7 +36,6 @@ var getAllUsers = function (callback) {
 	})
 }
 
-// DONE
 var userExists = function (username, callback) {
 	User.count({ username: username }, function (err, c) {
 		if (err) throw err;
@@ -52,9 +47,8 @@ var userExists = function (username, callback) {
 	});	
 }
 
-//////// PUBLIC
+// Public methods
 
-// DONE
 userSchema.statics.findByUsername = function (username, callback) {
 	getUser(username, function (user) {
 		if (user===null) {
@@ -65,7 +59,6 @@ userSchema.statics.findByUsername = function (username, callback) {
 	});
 }
 
-// DONE
 userSchema.statics.verifyPassword = function (username, candidatepw, callback) {
 	getUser(username, function (user) {
 		if (user===null) {
@@ -80,7 +73,6 @@ userSchema.statics.verifyPassword = function (username, candidatepw, callback) {
 	});
 }
 
-// DONE
 userSchema.statics.createNewUser = function (username, password, callback) {
 	userExists(username, function (err) {
 		if (err) {
@@ -99,13 +91,12 @@ userSchema.statics.createNewUser = function (username, password, callback) {
 				if (err) throw err;
 				console.log('User successfully stored in database!');
 			});
-			
+
 			callback(null, username);
 		}
 	});
 }
 
-// DONE
 userSchema.statics.getTweet = function (username, tweetId, callback) {
 	getUser(username, function (user) {
 		if (user===null) {
@@ -124,7 +115,6 @@ userSchema.statics.getTweet = function (username, tweetId, callback) {
 	});
 }
 
-// DONE
 userSchema.statics.getTweets = function (username, callback) {
 	getUser(username, function (user) {
 		if (user===null) {
@@ -143,7 +133,6 @@ userSchema.statics.getTweets = function (username, callback) {
 	});
 }
 
-// DONE
 userSchema.statics.addTweet = function (username, tweet, callback) {
 	getUser(username, function (user) {
 		if (user===null) {
