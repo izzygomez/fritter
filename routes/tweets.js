@@ -83,11 +83,11 @@ router.post('*', requireContent);
     - err: on failure, an error message
 */
 router.get('/', function(req, res) {
-  User.getTweets(req.currentUser.username, function(err, tweets, allTweets, followersTweets) {
+  User.getTweets(req.currentUser.username, function(err, tweets, allTweets, followersTweets, allUsers) {
     if (err) {
       utils.sendErrResponse(res, 500, 'An unknown error occurred.');
     } else {
-      utils.sendSuccessResponse(res, { tweets: tweets, allTweets: allTweets, followersTweets: followersTweets });
+      utils.sendSuccessResponse(res, { tweets: tweets, allTweets: allTweets, followersTweets: followersTweets, followers: req.currentUser.following, allUsers: allUsers });
     } 
   });
 });
@@ -146,6 +146,19 @@ router.post('/:tweet', function(req, res) {
         utils.sendSuccessResponse(res);
       }
   });
+});
+
+router.post('/follow', function (req, res) {
+  User.toggleFollow(
+    req.currentUser.username,
+    req.body.username,
+    function(err) {
+      if (err) {
+        utils.sendErrResponse(res, 500, 'An unknown error occured.');
+      } else {
+        utils.sendSuccessResponse(res);
+      }
+    })
 });
 
 /*

@@ -173,23 +173,21 @@ userSchema.statics.removeTweet = function (username, tweetId, callback) {
 	});
 }
 
-userSchema.statics.toggleFollow = function (username, followingUser, callback) {
-	getUser(followingUser, function (followingUser) {
+userSchema.statics.toggleFollow = function (username, followingUsername, callback) {
+	getUser(followingUsername, function (followingUser) {
 		if (followingUser===null) {
 			callback({msg: 'Invalid user to follow'});
 		} else {
 			getUser(username, function (user) {
-				if (user===null) {
-					callback({msg: 'Invalid username provided'});
-				}
+				if (user===null) callback({msg: 'Invalid username provided'});
 				if (user.following.indexOf(followingUser.username)===-1) {
 					var conditions = { username: username }; 
-					var update = { $push: { following: followingUser }};
+					var update = { $push: { following: followingUser.username }};
 					User.update(conditions, update, function () {});
 					callback(null);
 				} else {
 					var conditions = { username: username }; 
-					var update = { $pull: { following: followingUser }};
+					var update = { $pull: { following: followingUser.username }};
 					User.update(conditions, update, function () {});
 					callback(null);
 				}

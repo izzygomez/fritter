@@ -11,6 +11,7 @@ require('handlebars/runtime');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var tweets = require('./routes/tweets');
+var follow = require('./routes/follow');
 
 // Import User model
 var User = require('./models/User');
@@ -57,6 +58,7 @@ app.use(function(req, res, next) {
 app.use('/', index);
 app.use('/users', users);
 app.use('/tweets', tweets);
+app.use('/follow', follow);
 
 // ERROR HANDLERS
 // Note: The methods below are called

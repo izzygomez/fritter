@@ -18,20 +18,20 @@
   });
 
   $(document).on('click', '#my-tweets', function(evt) {
-      console.log("clicked my tweets button");
       loadHomePage();
   });
 
   $(document).on('click', '#all-users-tweets', function(evt) {
-      console.log("clicked all users tweets button");
       loadAllTweetsPage();
   });
 
   $(document).on('click', '#followers-tweets', function(evt) {
-      console.log("clicked followers tweets button");
       loadFollowersTweetsPage();
   });
 
+  $(document).on('click', '#followers', function(evt) {
+      loadFollowersPage();
+  });
 
   $(document).on('click', '.delete-tweet', function(evt) {
       var item = $(this).parent();
@@ -41,7 +41,6 @@
           type: 'DELETE'
       }).done(function(response) {
           item.remove();
-          // window.location.reload(true);
       }).fail(function(responseObject) {
           var response = $.parseJSON(responseObject.responseText);
           $('.error').text(response.err);
@@ -56,6 +55,23 @@
       }));
       item.hide();
   });
+
+  // NEW CODE START
+
+  $(document).on('click', '.toggle-follow-bttn', function(evt) {
+      var item = $(this).parent().parent();
+      var username = item.data('username');
+      $.post(
+        '/follow',
+        { username: username }
+      ).done(function(response) {
+          loadFollowersPage();
+      }).fail(function(responseObject) {
+          console.log('Something\'s gone terribly wrong!');
+      });
+  });
+
+  // NEW CODE END
 
   $(document).on('click', '.cancel-button', function(evt) {
       var item = $(this).parent();

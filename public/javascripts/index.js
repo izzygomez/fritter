@@ -4,6 +4,9 @@
 // call instead of manual insertion of an HTML String.
 Handlebars.registerPartial('tweet', Handlebars.templates['tweet']);
 Handlebars.registerPartial('allTweet', Handlebars.templates['allTweet']);
+Handlebars.registerPartial('follower', Handlebars.templates['follower']);
+Handlebars.registerPartial('allUser', Handlebars.templates['allUser']);
+
 
 // Global variable set when a user is logged in. Note
 // that this is unsafe on its own to determine this: we 
@@ -34,21 +37,25 @@ var loadHomePage = function() {
 */
 var loadTweetsPage = function() {
 	$.get('/tweets', function(response) {
-		loadPage('tweets', { tweets: response.content.tweets, currentUser: currentUser, allTweets: response.content.allTweets, followersTweets: response.content.followersTweets });
+		loadPage('tweets', { tweets: response.content.tweets, currentUser: currentUser, allTweets: response.content.allTweets, followersTweets: response.content.followersTweets, followers: response.content.followers });
 	});
 };	
 
 var loadAllTweetsPage = function () {
-	console.log("loading all tweets page");
 	$.get('/tweets', function(response) {
-		loadPage('allUsersTweets', { tweets: response.content.tweets, currentUser: currentUser, allTweets: response.content.allTweets, followersTweets: response.content.followersTweets });
+		loadPage('allUsersTweets', { tweets: response.content.tweets, currentUser: currentUser, allTweets: response.content.allTweets, followersTweets: response.content.followersTweets, followers: response.content.followers });
 	});
 }
 
 var loadFollowersTweetsPage = function () {
-	console.log("loading all follower's tweets page");
 	$.get('/tweets', function(response) {
-		loadPage('allFollowersTweets', { tweets: response.content.tweets, currentUser: currentUser, allTweets: response.content.allTweets, followersTweets: response.content.followersTweets });
+		loadPage('allFollowersTweets', { tweets: response.content.tweets, currentUser: currentUser, allTweets: response.content.allTweets, followersTweets: response.content.followersTweets, followers: response.content.followers });
+	});	
+}
+
+var loadFollowersPage = function () {
+	$.get('/tweets', function(response) {
+		loadPage('followers', { tweets: response.content.tweets, currentUser: currentUser, allTweets: response.content.allTweets, followersTweets: response.content.followersTweets, followers: response.content.followers, allUsers: response.content.allUsers });
 	});	
 }
 
