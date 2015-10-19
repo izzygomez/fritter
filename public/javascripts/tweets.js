@@ -56,8 +56,6 @@
       item.hide();
   });
 
-  // NEW CODE START
-
   $(document).on('click', '.toggle-follow-bttn', function(evt) {
       var item = $(this).parent().parent();
       var username = item.data('username');
@@ -71,7 +69,23 @@
       });
   });
 
-  // NEW CODE END
+  $(document).on('click', '.retweet', function(evt) {
+      var item = $(this).parent().parent();
+      var content = item.data('content');
+      var creator = item.data('creator');
+      var newContent = "RT@" + creator + ":\"" + content + "\""
+
+      $.post(
+          '/tweets',
+          { content: newContent }
+      ).done(function(response) {
+          loadHomePage();
+      }).fail(function(responseObject) {
+          var response = $.parseJSON(responseObject.responseText);
+          $('.error').text(response.err);
+      });
+
+  });
 
   $(document).on('click', '.cancel-button', function(evt) {
       var item = $(this).parent();
