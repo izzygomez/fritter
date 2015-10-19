@@ -15,6 +15,9 @@ var userSchema = new Schema({
 
 // Private methods
 
+/*
+ returns user
+*/
 var getUser = function (username, callback) {
 	userExists(username, function (err) {
 		if (err) {
@@ -29,6 +32,9 @@ var getUser = function (username, callback) {
 	});
 }
 
+/*
+ returns all users
+*/
 var getAllUsers = function (callback) {
 	User.find({}, function (err, users) {
 		if (err) throw err;
@@ -36,6 +42,9 @@ var getAllUsers = function (callback) {
 	})
 }
 
+/*
+ returns boolean of whether indicated user exists
+*/
 var userExists = function (username, callback) {
 	User.count({ username: username }, function (err, c) {
 		if (err) throw err;
@@ -48,7 +57,9 @@ var userExists = function (username, callback) {
 }
 
 // Public methods
-
+/*
+ returns user publicly
+*/
 userSchema.statics.findByUsername = function (username, callback) {
 	getUser(username, function (user) {
 		if (user===null) {
@@ -59,6 +70,9 @@ userSchema.statics.findByUsername = function (username, callback) {
 	});
 }
 
+/*
+ verifies that provided password for user is correct
+*/
 userSchema.statics.verifyPassword = function (username, candidatepw, callback) {
 	getUser(username, function (user) {
 		if (user===null) {
@@ -73,6 +87,9 @@ userSchema.statics.verifyPassword = function (username, candidatepw, callback) {
 	});
 }
 
+/*
+ creates a new user if user not already created
+*/
 userSchema.statics.createNewUser = function (username, password, callback) {
 	userExists(username, function (err) {
 		if (err) {
@@ -96,6 +113,9 @@ userSchema.statics.createNewUser = function (username, password, callback) {
 	});
 }
 
+/*
+ gets tweet of username by tweetId
+*/
 userSchema.statics.getTweet = function (username, tweetId, callback) {
 	getUser(username, function (user) {
 		if (user===null) {
@@ -114,6 +134,9 @@ userSchema.statics.getTweet = function (username, tweetId, callback) {
 	});
 }
 
+/*
+ returns tweets of current user, and tweets of all users
+*/
 userSchema.statics.getTweets = function (username, callback) {
 	getUser(username, function (user) {
 		if (user===null) {
@@ -139,6 +162,9 @@ userSchema.statics.getTweets = function (username, callback) {
 	});
 }
 
+/*
+ adds a tweet to the current user
+*/
 userSchema.statics.addTweet = function (username, tweet, callback) {
 	getUser(username, function (user) {
 		if (user===null) {
@@ -154,6 +180,9 @@ userSchema.statics.addTweet = function (username, tweet, callback) {
 	});
 }
 
+/*
+ removes one of current user's tweet, according to tweetId
+*/
 userSchema.statics.removeTweet = function (username, tweetId, callback) {
 	getUser(username, function (user) {
 		if (user===null) {
@@ -173,6 +202,9 @@ userSchema.statics.removeTweet = function (username, tweetId, callback) {
 	});
 }
 
+/*
+ toggles status of user following another user
+*/
 userSchema.statics.toggleFollow = function (username, followingUsername, callback) {
 	getUser(followingUsername, function (followingUser) {
 		if (followingUser===null) {

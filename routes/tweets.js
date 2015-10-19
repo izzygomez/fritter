@@ -148,19 +148,6 @@ router.post('/:tweet', function(req, res) {
   });
 });
 
-router.post('/follow', function (req, res) {
-  User.toggleFollow(
-    req.currentUser.username,
-    req.body.username,
-    function(err) {
-      if (err) {
-        utils.sendErrResponse(res, 500, 'An unknown error occured.');
-      } else {
-        utils.sendSuccessResponse(res);
-      }
-    })
-});
-
 /*
   DELETE /tweets/:tweet
   Request parameters:

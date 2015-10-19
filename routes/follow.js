@@ -32,7 +32,12 @@ router.all('*', requireAuthentication);
 router.post('*', requireUsername);
 
 /*
-  TODO
+  POST /follow
+  Request body:
+    - username: the username of the user that you want to toggle follow status on
+  Response:
+    - success: true if the server succeeded in toggling status
+    - err: on failure, an error message
 */
 router.post('/', function (req, res) {
   User.toggleFollow(
