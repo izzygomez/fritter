@@ -12,9 +12,15 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000'); // otherwise
-// app.listen(process.env.PORT || '3000'); // to deploy to heroku
+// var port = normalizePort(process.env.PORT || '3000'); // otherwise
+app.listen(process.env.PORT || '3000'); // to deploy to heroku
 app.set('port', port);
+
+/**
+ * MongoLab setup
+ */
+var mongoose = require('mongoose');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/mymongodb');
 
 /**
  * Create HTTP server.
