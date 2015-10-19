@@ -121,6 +121,7 @@ userSchema.statics.getTweets = function (username, callback) {
 		} else {
 			var allTweets = [];
 			var followersTweets = [];
+			var allUsers = [];
 			getAllUsers(function (users) {
 				users.forEach( function (someUser, index, array) {
 					someUser.tweets.forEach( function (tweet, index, array) {
@@ -129,8 +130,10 @@ userSchema.statics.getTweets = function (username, callback) {
 							followersTweets.push(tweet);
 						}
 					});
+					allUsers.push(someUser);
 				});
-				callback(null, user.tweets, allTweets, followersTweets);
+
+				callback(null, user.tweets, allTweets, followersTweets, allUsers);
 			});
 		}
 	});
@@ -142,7 +145,6 @@ userSchema.statics.addTweet = function (username, tweet, callback) {
 			callback({msg: 'Invalid user.'});
 		} else {
 			tweet._id = Date.now();
-			// tweet.createDate = new Date().toString();
 
 			var conditions = { username: user.username };
 			var update = { $push: { tweets: tweet } };
@@ -151,9 +153,6 @@ userSchema.statics.addTweet = function (username, tweet, callback) {
 		}
 	});
 }
-
-// userSchema.statics.updateTweet = function (username, tweetId, newContent, callback) {
-// }
 
 userSchema.statics.removeTweet = function (username, tweetId, callback) {
 	getUser(username, function (user) {
@@ -169,6 +168,31 @@ userSchema.statics.removeTweet = function (username, tweetId, callback) {
 				var update = { $set: { tweets: updatedTweets} };
 				User.update(conditions, update, function () {});
 				callback(null);
+			});
+		}
+	});
+}
+
+userSchema.statics.toggleFollow = function (username, followingUser, callback) {
+	getUser(followingUser, function (followingUser) {
+		if (followingUser===null) {
+			callback({msg: 'Invalid user to follow'});
+		} else {
+			getUser(username, function (user) {
+				if (user===null) {
+					callback({msg: 'Invalid username provided'});
+				}
+				if (user.following.indexOf(followingUser.username)===-1) {
+					var conditions = { username: username }; 
+					var update = { $push: { following: followingUser }};
+					User.update(conditions, update, function () {});
+					callback(null);
+				} else {
+					var conditions = { username: username }; 
+					var update = { $pull: { following: followingUser }};
+					User.update(conditions, update, function () {});
+					callback(null);
+				}
 			});
 		}
 	});
