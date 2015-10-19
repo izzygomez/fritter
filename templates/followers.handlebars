@@ -1,0 +1,22 @@
+<div id="tweets">
+
+  <p>Welcome, {{currentUser}} (<a href="#" id="logout-link">logout</a>)</p>
+  <p><b>Edit followers</b></p>
+  <p><a href="#" id="my-tweets">My tweets</a> <a href="#" id="all-users-tweets">All tweets</a> <a href="#" id="followers-tweets">Follower's tweets</a></p>
+
+  <h1>Currently following</h1>
+
+  {{#each followers}}
+    {{> follower}}
+  {{else}}
+    <p><em>You aren't following anyone! Follow someone below.</em></p>
+  {{/each}}
+
+  <h1>All Users</h1>
+  {{#each allUsers}}
+    {{> allUser}}
+  {{else}}
+    <p><em>This list should be showing all users... idk why it's empty</em></p>
+  {{/each}}
+
+</div>
