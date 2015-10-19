@@ -1,7 +1,7 @@
 // grab the things that we need
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/test');
+// mongoose.connect('mongodb://localhost/test');
 
 var Schema = mongoose.Schema;
 

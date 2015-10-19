@@ -14,13 +14,14 @@ var http = require('http');
 
 // var port = normalizePort(process.env.PORT || '3000'); // otherwise
 app.listen(process.env.PORT || '3000'); // to deploy to heroku
-app.set('port', port);
+// app.set('port', port);
 
 /**
  * MongoLab setup
  */
 var mongoose = require('mongoose');
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/mymongodb');
+// Connect to either the MONGOLAB_URI or to the local database.
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/test');
 
 /**
  * Create HTTP server.
